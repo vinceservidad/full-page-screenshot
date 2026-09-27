@@ -71,11 +71,32 @@ def write_png(path, n, raw):
         f.write(sig + chunk(b"IHDR", ihdr) + chunk(b"IDAT", idat) + chunk(b"IEND", b""))
 
 
+def padded(n, inner):
+    """make_icon(inner) centred on a transparent n x n canvas."""
+    tile = make_icon(inner)
+    off = (n - inner) // 2
+    row = inner * 4 + 1  # filter byte + RGBA
+    px = bytearray()
+    for y in range(n):
+        px.append(0)
+        if off <= y < off + inner:
+            src = tile[(y - off) * row + 1:(y - off + 1) * row]
+            px.extend(b"\x00" * (off * 4) + src + b"\x00" * ((n - off - inner) * 4))
+        else:
+            px.extend(b"\x00" * (n * 4))
+    return bytes(px)
+
+
 def main():
     here = os.path.dirname(os.path.abspath(__file__))
     for n in (16, 32, 48, 128):
         write_png(os.path.join(here, f"icon{n}.png"), n, make_icon(n))
         print(f"wrote icon{n}.png")
+    # Chrome Web Store listing icon: 96 px artwork + 16 px transparent padding.
+    store = os.path.join(os.path.dirname(here), "store")
+    os.makedirs(store, exist_ok=True)
+    write_png(os.path.join(store, "icon-128.png"), 128, padded(128, 96))
+    print("wrote store/icon-128.png")
 
 
 if __name__ == "__main__":

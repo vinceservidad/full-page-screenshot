@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Full Page Screenshot",
-  "version": "2.0.0",
-  "description": "Capture a true full-page screenshot of any web page — the entire page, the visible area, or a selected region — then copy or save it.",
+  "version": "2.0.1",
+  "description": "True full-page screenshots of any web page: the whole page, the visible area, or a selected region. Copy or save them.",
   "minimum_chrome_version": "116",
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["<all_urls>"],

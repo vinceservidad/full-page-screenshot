@@ -122,6 +122,11 @@ files, click the reload icon. The icons are already included;
 - Sticky sidebars (`position: sticky`, not full width) can still repeat down
   the image; fixed ones are handled.
 
+## Privacy
+
+Nothing leaves your device: no accounts, uploads, analytics or tracking. See
+[PRIVACY.md](PRIVACY.md).
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
