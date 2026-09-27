@@ -1,0 +1,13 @@
+# Local Claude Code settings
+.claude/
+
+# OS / editor noise
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Packed builds for the Web Store
+*.zip
+*.crx
+*.pem

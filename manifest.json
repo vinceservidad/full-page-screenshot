@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Full Page Screenshot",
+  "version": "2.0.0",
+  "description": "Capture a true full-page screenshot of any web page — the entire page, the visible area, or a selected region — then copy or save it.",
+  "minimum_chrome_version": "116",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Full Page Screenshot",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "commands": {
+    "capture-full-page": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Capture full page screenshot"
+    },
+    "capture-visible": {
+      "description": "Capture visible area"
+    },
+    "capture-selection": {
+      "description": "Select an area to capture"
+    }
+  }
+}

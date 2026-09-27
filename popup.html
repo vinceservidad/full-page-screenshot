@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Full Page Screenshot</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #111827;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --line: #1f2937;
+    --accent: #6366f1;
+    --accent2: #22d3ee;
+    --ok: #34d399;
+    --err: #f87171;
+  }
+  html, body {
+    margin: 0;
+    width: 300px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .wrap { padding: 16px; }
+  h1 {
+    font-size: 15px;
+    margin: 0 0 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h1 .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  .sub { font-size: 11px; color: var(--muted); margin: 0 0 12px; }
+  label, .label { display: block; font-size: 12px; color: var(--muted); margin: 12px 0 4px; }
+
+  .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .modes button {
+    margin: 0;
+    padding: 8px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--card);
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .modes button[aria-pressed="true"] {
+    color: #fff;
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(99,102,241,.25), rgba(34,211,238,.25));
+  }
+
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  select {
+    width: 100%;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 9px;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+  input[type="range"] { flex: 1; accent-color: var(--accent); }
+  #qualityVal { font-size: 12px; color: var(--muted); min-width: 34px; text-align: right; }
+
+  .buttons { display: flex; gap: 8px; margin-top: 16px; }
+  #capture, #cancel {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 9px;
+    cursor: pointer;
+  }
+  #capture {
+    flex: 1;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: 0;
+  }
+  #capture:disabled { opacity: 0.55; cursor: default; }
+  #cancel {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--line);
+  }
+  button:focus-visible, select:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent2);
+    outline-offset: 2px;
+  }
+
+  #barWrap {
+    display: none;
+    height: 6px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  #bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.2s;
+  }
+  .statusRow { font-size: 12px; color: var(--muted); margin-top: 10px; min-height: 15px; line-height: 1.4; }
+  .statusRow.ok { color: var(--ok); }
+  .statusRow.err { color: var(--err); }
+  .previewLink { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--accent2); }
+  #modeHint { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+  .hint { font-size: 10px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+  .hint a { color: var(--muted); }
+  kbd {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 4px; padding: 1px 4px; font-size: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><span class="dot"></span> Full Page Screenshot</h1>
+  <p class="sub">Choose what to capture, then copy or save it.</p>
+
+  <span class="label" id="modeLabel">Capture mode</span>
+  <div class="modes" role="group" aria-labelledby="modeLabel">
+    <button type="button" data-mode="full" aria-pressed="true">Full page</button>
+    <button type="button" data-mode="visible" aria-pressed="false">Visible area</button>
+    <button type="button" data-mode="selection" aria-pressed="false">Select area</button>
+  </div>
+  <div id="modeHint"></div>
+
+  <label for="format">Format</label>
+  <select id="format">
+    <option value="png">PNG (lossless)</option>
+    <option value="jpeg">JPEG (smaller file)</option>
+  </select>
+
+  <div id="qualityRow" hidden>
+    <label for="quality">Quality</label>
+    <div class="row">
+      <input id="quality" type="range" min="0.5" max="1" step="0.05" value="0.92" />
+      <span id="qualityVal">92%</span>
+    </div>
+  </div>
+
+  <div id="delayRow" hidden>
+    <label for="delay">Delay</label>
+    <select id="delay">
+      <option value="0">None</option>
+      <option value="3">3 seconds — time to open a menu</option>
+      <option value="5">5 seconds</option>
+      <option value="10">10 seconds</option>
+    </select>
+  </div>
+
+  <label for="after">After capture</label>
+  <select id="after">
+    <option value="preview">Open preview — copy or download</option>
+    <option value="download">Save straight to Downloads</option>
+  </select>
+
+  <div class="buttons">
+    <button id="capture" type="button">Capture Full Page</button>
+    <button id="cancel" type="button" hidden>Cancel</button>
+  </div>
+
+  <div id="barWrap" role="progressbar" aria-label="Capture progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="bar"></div></div>
+  <div class="statusRow"><span id="status" role="status" aria-live="polite"></span> <span id="pct" aria-hidden="true"></span></div>
+  <a href="#" id="openPreview" class="previewLink" hidden>Open preview</a>
+
+  <p class="hint">
+    <span id="shortcut"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Y</kbd> captures the full page.</span>
+    Stay on the tab while it scrolls. <kbd>Esc</kbd> cancels; <b>Stop &amp; save</b> keeps what's captured so far.
+    <a href="#" id="shortcuts">Set shortcuts for the other modes</a>.
+  </p>
+</div>
+<script src="popup.js"></script>
+</body>
+</html>

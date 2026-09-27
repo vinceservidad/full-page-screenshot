@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Screenshot</title>
+<link rel="icon" href="icons/icon32.png" />
+<style>
+  :root {
+    --bg: #0b1020;
+    --card: #111827;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --line: #1f2937;
+    --accent: #6366f1;
+    --accent2: #22d3ee;
+    --ok: #34d399;
+    --err: #f87171;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 12px 20px;
+    background: rgba(11, 16, 32, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  #meta { font-size: 12px; color: var(--muted); flex: 1; min-width: 200px; overflow-wrap: anywhere; }
+  #meta a { color: var(--muted); }
+  .actions { display: flex; gap: 8px; align-items: center; }
+  button {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+  }
+  button.primary {
+    border: 0;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  button:disabled { opacity: 0.5; cursor: default; }
+  button:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+  kbd { font-size: 10px; opacity: 0.7; margin-left: 4px; }
+  #toast { font-size: 12px; min-width: 90px; color: var(--muted); }
+  #toast.ok { color: var(--ok); }
+  #toast.err { color: var(--err); }
+  #note {
+    display: none;
+    margin: 12px 20px 0;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  main { padding: 20px; display: flex; justify-content: center; }
+  #shot {
+    display: none;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px var(--line), 0 12px 40px rgba(0, 0, 0, 0.45);
+    cursor: zoom-in;
+    background: #fff;
+  }
+  #shot.actual { max-width: none; cursor: zoom-out; }
+  #empty { color: var(--muted); font-size: 14px; margin-top: 60px; text-align: center; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand"><span class="dot"></span> Screenshot</div>
+    <div id="meta">Loading…</div>
+    <div class="actions">
+      <span id="toast" role="status" aria-live="polite"></span>
+      <button id="copy" type="button" disabled>Copy<kbd id="copyKbd"></kbd></button>
+      <button id="download" type="button" class="primary" disabled>Download<kbd id="saveKbd"></kbd></button>
+    </div>
+  </header>
+  <div id="note"></div>
+  <main>
+    <img id="shot" alt="Captured screenshot" title="Click to toggle fit / actual size" />
+    <div id="empty" hidden></div>
+  </main>
+  <script src="idb.js"></script>
+  <script src="viewer.js"></script>
+</body>
+</html>
