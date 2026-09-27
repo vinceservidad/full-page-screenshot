@@ -4,6 +4,8 @@ A Manifest V3 Chrome extension that captures a **full-page** screenshot — the
 entire scrollable area of a page, including apps that scroll an inner panel and
 editors that show the page in an embedded frame — then lets you copy or save it.
 
+![The popup, and the preview tab showing a stitched full-page capture](docs/screenshot.png)
+
 It works with only `activeTab`, `scripting`, `storage` and host access: no
 `chrome.debugger` (which managed Chrome profiles often block) and no
 `downloads` permission.
