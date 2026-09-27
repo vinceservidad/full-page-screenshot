@@ -6,6 +6,8 @@ editors that show the page in an embedded frame — then lets you copy or save i
 
 ![The popup, and the preview tab showing a stitched full-page capture](docs/screenshot.png)
 
+**[⬇ Download the latest release](https://github.com/vinceservidad/full-page-screenshot/releases/latest)** — see [Install](#install).
+
 It works with only `activeTab`, `scripting`, `storage` and host access: no
 `chrome.debugger` (which managed Chrome profiles often block) and no
 `downloads` permission.
@@ -26,6 +28,9 @@ It works with only `activeTab`, `scripting`, `storage` and host access: no
 After a capture the image opens in a **preview tab** with **Copy** (⌘/Ctrl+C)
 and **Download** (⌘/Ctrl+S). You can switch the popup's “After capture” option
 to save straight to Downloads instead.
+
+Files are named `screenshot-<hostname>-<YYYY-MM-DD_HH-MM-SS>.png` (`.jpg` for
+JPEG; local time).
 
 ## How full-page capture handles real pages
 
@@ -66,19 +71,25 @@ image is being saved.
 - Visible area and Select area have no default; assign them at
   `chrome://extensions/shortcuts` (the popup links there).
 
-## Install (unpacked, for development)
+## Install
 
-1. Open `chrome://extensions` in Chrome.
-2. Toggle **Developer mode** on (top-right).
-3. Click **Load unpacked** and select this folder. (After updating the files,
-   click the extension's reload icon there.)
+**[Download the latest release](https://github.com/vinceservidad/full-page-screenshot/releases/latest)**
+(the `full-page-screenshot-v….zip` file under Assets), then:
+
+1. Unzip it somewhere permanent — Chrome loads the extension from that folder.
+2. Open `chrome://extensions` and turn on **Developer mode** (top-right).
+3. Click **Load unpacked** and select the unzipped `full-page-screenshot`
+   folder.
 4. Pin the extension, open any page, and click the icon.
 
-The icons are already included; `python3 icons/generate_icons.py` only
-regenerates them.
+To update, replace the folder's contents with a newer release and click the
+extension's reload icon in `chrome://extensions`.
 
-Files are named `screenshot-<hostname>-<YYYY-MM-DD_HH-MM-SS>.png` (`.jpg` for
-JPEG; local time).
+### From source
+
+Clone the repo and load its folder the same way (steps 2–4). After editing
+files, click the reload icon. The icons are already included;
+`python3 icons/generate_icons.py` only regenerates them.
 
 ## How it works
 
